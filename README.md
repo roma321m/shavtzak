@@ -1,5 +1,8 @@
 # Shift Scheduler
 
+
+[Live](https://roma321m.github.io/shavtzak/)
+
 A modern, feature-rich shift scheduling application built with React and Vite. This application helps manage employee schedules, missions, and availability with an intuitive interface and powerful scheduling capabilities.
 
 ## Features
@@ -8,9 +11,35 @@ A modern, feature-rich shift scheduling application built with React and Vite. T
 - **Employee Management**: Add and manage employees with role assignments
 - **Availability Tracking**: Employees can set their availability for different time periods
 - **Schedule Generation**: Automatically generate schedules with equitable workload distribution
-- **Export Functionality**: Export schedules to Excel format
-- **Premium Dark Theme**: Modern Material 3-inspired design with a sleek dark interface
-- **Responsive Design**: Works seamlessly across different screen sizes
+- **Import/Export**: 
+    - **Export Data**: Save your entire workspace (missions, employees, schedule) to a JSON file.
+    - **Import Data**: Restore your workspace from a JSON file.
+    - **Export Schedule**: Download the generated schedule as an Excel file.
+- **Internationalization**: Full support for English and Hebrew (RTL).
+- **Premium Dark Theme**: Modern Material 3-inspired design with a sleek dark interface.
+
+## Usage Guide
+
+### 1. Setup Data
+- **Missions**: Go to the "Missions" tab to define your shifts. You can set start/end times, required roles, and colors.
+- **Employees**: Go to the "Employees" tab to add your team members. Assign them roles (e.g., Manager, Driver) and tags.
+
+### 2. Manage Availability
+- **Availability**: Use the "Availability" tab (Calendar view) to see who is available.
+- **Individual Availability**: In the "Employees" tab, click the calendar icon on an employee card to set their specific availability dates.
+
+### 3. Generate Schedule
+- Go to the "Schedule" tab.
+- Select the date range (defaults to the current week).
+- Click **Generate**. The algorithm will assign employees to missions based on their roles and availability, ensuring fair distribution.
+- **View Modes**: Toggle between "View by Employee" and "View by Mission" to see the schedule from different perspectives.
+
+### 4. Export & Share
+- **Excel**: Click "Export" in the Schedule tab to download an .xlsx file.
+- **Backup/Share**: Use the "Export Data" button in the top header to save your configuration. You can share this JSON file with others, who can then "Import Data" to view the same setup.
+
+### Reference Data
+A sample data file is included in this repository: [`reference_data.json`](./reference_data.json). You can download this file and import it into the app to see a demo configuration.
 
 ## Prerequisites
 

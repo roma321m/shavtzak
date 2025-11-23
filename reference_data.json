@@ -1,0 +1,114 @@
+{
+    "employees": [
+        {
+            "id": "emp-001",
+            "name": "John Doe",
+            "roles": [
+                "Manager",
+                "Driver"
+            ],
+            "tags": [
+                "Senior",
+                "Certified"
+            ],
+            "availability": []
+        },
+        {
+            "id": "emp-002",
+            "name": "Jane Smith",
+            "roles": [
+                "Medic",
+                "Regular"
+            ],
+            "tags": [
+                "EMT-B"
+            ],
+            "availability": []
+        },
+        {
+            "id": "emp-003",
+            "name": "Mike Johnson",
+            "roles": [
+                "Driver",
+                "Regular"
+            ],
+            "tags": [],
+            "availability": []
+        },
+        {
+            "id": "emp-004",
+            "name": "Sarah Connor",
+            "roles": [
+                "Manager",
+                "Medic"
+            ],
+            "tags": [
+                "Leader"
+            ],
+            "availability": []
+        }
+    ],
+    "missions": [
+        {
+            "id": "miss-001",
+            "name": "Morning Patrol",
+            "start": "08:00",
+            "end": "16:00",
+            "requirements": [
+                {
+                    "role": "Manager",
+                    "count": 1
+                },
+                {
+                    "role": "Driver",
+                    "count": 1
+                }
+            ],
+            "color": "#3b82f6",
+            "enabled": true
+        },
+        {
+            "id": "miss-002",
+            "name": "Evening Standby",
+            "start": "16:00",
+            "end": "00:00",
+            "requirements": [
+                {
+                    "role": "Medic",
+                    "count": 1
+                },
+                {
+                    "role": "Regular",
+                    "count": 2
+                }
+            ],
+            "color": "#10b981",
+            "enabled": true
+        },
+        {
+            "id": "miss-003",
+            "name": "Night Shift",
+            "start": "00:00",
+            "end": "08:00",
+            "requirements": [
+                {
+                    "role": "Driver",
+                    "count": 1
+                },
+                {
+                    "role": "Regular",
+                    "count": 1
+                }
+            ],
+            "color": "#8b5cf6",
+            "enabled": true
+        }
+    ],
+    "roles": [
+        "Manager",
+        "Driver",
+        "Medic",
+        "Regular"
+    ],
+    "schedule": []
+}
