@@ -8,8 +8,8 @@ import MaterialDatePicker from '../ui/MaterialDatePicker';
 
 const ScheduleManager = () => {
     const { missions, employees, schedule, updateSchedule, t, dateLocale } = useApp();
-    const [startDate, setStartDate] = useState(format(startOfWeek(new Date(), { weekStartsOn: 1 }), 'yyyy-MM-dd'));
-    const [endDate, setEndDate] = useState(format(endOfWeek(new Date(), { weekStartsOn: 1 }), 'yyyy-MM-dd'));
+    const [startDate, setStartDate] = useState(format(new Date(), 'yyyy-MM-dd'));
+    const [endDate, setEndDate] = useState(format(addDays(new Date(), 6), 'yyyy-MM-dd'));
     const [viewMode, setViewMode] = useState('employee'); // 'employee' or 'mission'
 
     const handleGenerate = () => {
@@ -218,43 +218,50 @@ const ScheduleManager = () => {
                             </tr>
                         </thead>
                         <tbody>
-                            {missions.filter(m => m.enabled !== false).map(mission => (
-                                <tr key={mission.id} style={{ borderBottom: '1px solid var(--bg-tertiary)' }}>
-                                    <td style={{ padding: '0.75rem', fontWeight: 500 }}>
-                                        {mission.name}
-                                        <div style={{ fontSize: '0.75rem', color: 'var(--text-secondary)' }}>{mission.start} - {mission.end}</div>
-                                    </td>
-                                    {days.map(day => {
-                                        const dateStr = format(day, 'yyyy-MM-dd');
-                                        const shifts = schedule.filter(s => s.missionName === mission.name && s.date === dateStr);
-                                        return (
-                                            <td key={day.toString()} style={{ padding: '0.5rem', textAlign: 'center' }}>
-                                                {shifts.length > 0 ? (
-                                                    <div style={{ display: 'flex', flexDirection: 'column', gap: '0.25rem' }}>
-                                                        {shifts.map((shift, i) => {
-                                                            const emp = employees.find(e => e.id === shift.employeeId);
-                                                            return (
-                                                                <div key={i} style={{
-                                                                    backgroundColor: shift.employeeId ? 'rgba(34, 197, 94, 0.1)' : 'rgba(239, 68, 68, 0.1)',
-                                                                    color: shift.employeeId ? 'var(--success)' : 'var(--danger)',
-                                                                    padding: '0.5rem',
-                                                                    borderRadius: 'var(--radius)',
-                                                                    fontSize: '0.875rem'
-                                                                }}>
-                                                                    <div style={{ fontWeight: 600 }}>{emp ? emp.name : t('unassigned')}</div>
-                                                                    <div style={{ fontSize: '0.75rem' }}>{shift.role}</div>
-                                                                </div>
-                                                            );
-                                                        })}
-                                                    </div>
-                                                ) : (
-                                                    <span style={{ color: 'var(--bg-tertiary)' }}>-</span>
-                                                )}
-                                            </td>
-                                        );
-                                    })}
-                                </tr>
-                            ))}
+                            {missions
+                                .filter(m => m.enabled !== false)
+                                .sort((a, b) => {
+                                    const startDiff = a.start.localeCompare(b.start);
+                                    if (startDiff !== 0) return startDiff;
+                                    return a.end.localeCompare(b.end);
+                                })
+                                .map(mission => (
+                                    <tr key={mission.id} style={{ borderBottom: '1px solid var(--bg-tertiary)' }}>
+                                        <td style={{ padding: '0.75rem', fontWeight: 500 }}>
+                                            {mission.name}
+                                            <div style={{ fontSize: '0.75rem', color: 'var(--text-secondary)' }}>{mission.start} - {mission.end}</div>
+                                        </td>
+                                        {days.map(day => {
+                                            const dateStr = format(day, 'yyyy-MM-dd');
+                                            const shifts = schedule.filter(s => s.missionName === mission.name && s.date === dateStr);
+                                            return (
+                                                <td key={day.toString()} style={{ padding: '0.5rem', textAlign: 'center' }}>
+                                                    {shifts.length > 0 ? (
+                                                        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.25rem' }}>
+                                                            {shifts.map((shift, i) => {
+                                                                const emp = employees.find(e => e.id === shift.employeeId);
+                                                                return (
+                                                                    <div key={i} style={{
+                                                                        backgroundColor: shift.employeeId ? 'rgba(34, 197, 94, 0.1)' : 'rgba(239, 68, 68, 0.1)',
+                                                                        color: shift.employeeId ? 'var(--success)' : 'var(--danger)',
+                                                                        padding: '0.5rem',
+                                                                        borderRadius: 'var(--radius)',
+                                                                        fontSize: '0.875rem'
+                                                                    }}>
+                                                                        <div style={{ fontWeight: 600 }}>{emp ? emp.name : t('unassigned')}</div>
+                                                                        <div style={{ fontSize: '0.75rem' }}>{shift.role}</div>
+                                                                    </div>
+                                                                );
+                                                            })}
+                                                        </div>
+                                                    ) : (
+                                                        <span style={{ color: 'var(--bg-tertiary)' }}>-</span>
+                                                    )}
+                                                </td>
+                                            );
+                                        })}
+                                    </tr>
+                                ))}
                         </tbody>
                     </table>
                 )}
