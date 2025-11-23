@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Clock } from 'lucide-react';
+import { useApp } from '../../context/AppProvider';
 
 const MaterialTimePicker = ({ label, value, onChange }) => {
     const [isOpen, setIsOpen] = useState(false);
@@ -21,6 +22,13 @@ const MaterialTimePicker = ({ label, value, onChange }) => {
         onChange(`${h}:${m}`);
         setIsOpen(false);
     };
+
+    const { t } = useApp(); // Need to ensure useApp is imported or passed down. 
+    // Wait, MaterialTimePicker is a UI component, it might not have access to AppProvider if it's generic.
+    // But it is inside AppProvider in this app.
+    // Let's check imports. It doesn't import useApp.
+
+    // Actually, let's import useApp.
 
     return (
         <div style={{ position: 'relative' }}>
@@ -98,8 +106,8 @@ const MaterialTimePicker = ({ label, value, onChange }) => {
 
                         {/* Actions */}
                         <div style={{ display: 'flex', justifyContent: 'flex-end', width: '100%', gap: '1rem' }}>
-                            <button onClick={() => setIsOpen(false)} className="btn" style={{ color: 'var(--accent)' }}>Cancel</button>
-                            <button onClick={handleSave} className="btn" style={{ color: 'var(--accent)', fontWeight: 'bold' }}>OK</button>
+                            <button onClick={() => setIsOpen(false)} className="btn" style={{ color: 'var(--accent)' }}>{t('cancel')}</button>
+                            <button onClick={handleSave} className="btn" style={{ color: 'var(--accent)', fontWeight: 'bold' }}>{t('ok')}</button>
                         </div>
                     </div>
                 </div>

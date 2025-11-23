@@ -2,10 +2,9 @@ import React, { useState } from 'react';
 import { useApp } from '../../context/AppProvider';
 import { Plus, Trash2 } from 'lucide-react';
 import MaterialTimePicker from '../ui/MaterialTimePicker';
-import { t } from '../../utils/translations';
 
 const MissionForm = ({ onClose, onSuccess, initialData, isEditing }) => {
-    const { addMission, updateMission, roles } = useApp();
+    const { addMission, updateMission, roles, t } = useApp();
     const [name, setName] = useState('');
     const [start, setStart] = useState('09:00');
     const [end, setEnd] = useState('17:00');

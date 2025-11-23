@@ -5,7 +5,7 @@ import { ChevronLeft, ChevronRight, X, Clock } from 'lucide-react';
 import MaterialTimePicker from '../ui/MaterialTimePicker';
 
 const AvailabilityModal = ({ employeeId, onClose }) => {
-    const { employees, updateEmployee } = useApp();
+    const { employees, updateEmployee, t, dateLocale, isRTL } = useApp();
     const employee = employees.find(e => e.id === employeeId);
     const [currentMonth, setCurrentMonth] = useState(new Date());
     const [selectedDate, setSelectedDate] = useState(null);
@@ -46,7 +46,7 @@ const AvailabilityModal = ({ employeeId, onClose }) => {
         end: endOfWeek(endOfMonth(currentMonth))
     });
 
-    const weekDays = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+    const weekDays = [t('sun'), t('mon'), t('tue'), t('wed'), t('thu'), t('fri'), t('sat')];
 
     return (
         <div style={{
@@ -61,12 +61,16 @@ const AvailabilityModal = ({ employeeId, onClose }) => {
                     <X size={24} />
                 </button>
 
-                <h3 className="title">Availability: {employee.name}</h3>
+                <h3 className="title">{t('availability')}: {employee.name}</h3>
 
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
-                    <button onClick={() => setCurrentMonth(subMonths(currentMonth, 1))} className="btn btn-secondary"><ChevronLeft size={20} /></button>
-                    <span style={{ fontSize: '1.25rem', fontWeight: 600 }}>{format(currentMonth, 'MMMM yyyy')}</span>
-                    <button onClick={() => setCurrentMonth(addMonths(currentMonth, 1))} className="btn btn-secondary"><ChevronRight size={20} /></button>
+                    <button onClick={() => setCurrentMonth(subMonths(currentMonth, 1))} className="btn btn-secondary">
+                        {isRTL ? <ChevronRight size={20} /> : <ChevronLeft size={20} />}
+                    </button>
+                    <span style={{ fontSize: '1.25rem', fontWeight: 600 }}>{format(currentMonth, 'MMMM yyyy', { locale: dateLocale })}</span>
+                    <button onClick={() => setCurrentMonth(addMonths(currentMonth, 1))} className="btn btn-secondary">
+                        {isRTL ? <ChevronLeft size={20} /> : <ChevronRight size={20} />}
+                    </button>
                 </div>
 
                 <div style={{ display: 'grid', gridTemplateColumns: 'repeat(7, 1fr)', gap: '0.5rem', marginBottom: '0.5rem', textAlign: 'center', fontWeight: 600, color: 'var(--text-secondary)' }}>
@@ -98,7 +102,7 @@ const AvailabilityModal = ({ employeeId, onClose }) => {
                                 <span style={{ fontWeight: 500 }}>{format(day, 'd')}</span>
                                 {avail && (
                                     <div style={{ fontSize: '0.6rem', marginTop: '0.25rem', color: 'var(--success)' }}>
-                                        {avail.start === '00:00' && avail.end === '00:00' ? 'All Day' : `${avail.start}-${avail.end}`}
+                                        {avail.start === '00:00' && avail.end === '00:00' ? t('allDay') : `${avail.start}-${avail.end}`}
                                     </div>
                                 )}
                             </div>
@@ -113,6 +117,8 @@ const AvailabilityModal = ({ employeeId, onClose }) => {
                         onSave={handleSaveAvailability}
                         onDelete={handleDeleteAvailability}
                         onClose={() => setSelectedDate(null)}
+                        t={t}
+                        dateLocale={dateLocale}
                     />
                 )}
             </div>
@@ -120,7 +126,7 @@ const AvailabilityModal = ({ employeeId, onClose }) => {
     );
 };
 
-const DayEditor = ({ date, initialAvailability, onSave, onDelete, onClose }) => {
+const DayEditor = ({ date, initialAvailability, onSave, onDelete, onClose, t, dateLocale }) => {
     const [start, setStart] = useState(initialAvailability?.start || '09:00');
     const [end, setEnd] = useState(initialAvailability?.end || '17:00');
     const [isAllDay, setIsAllDay] = useState(
@@ -142,7 +148,7 @@ const DayEditor = ({ date, initialAvailability, onSave, onDelete, onClose }) => 
             boxShadow: '0 10px 25px -5px rgba(0, 0, 0, 0.5)', border: '1px solid var(--bg-tertiary)',
             width: '300px', zIndex: 10
         }}>
-            <h4 className="title" style={{ fontSize: '1.1rem' }}>Edit {format(date, 'MMM d')}</h4>
+            <h4 className="title" style={{ fontSize: '1.1rem' }}>{t('edit')} {format(date, 'MMM d', { locale: dateLocale })}</h4>
 
             <div style={{ marginBottom: '1rem' }}>
                 <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', cursor: 'pointer' }}>
@@ -152,19 +158,19 @@ const DayEditor = ({ date, initialAvailability, onSave, onDelete, onClose }) => 
                         onChange={(e) => setIsAllDay(e.target.checked)}
                         style={{ width: 'auto' }}
                     />
-                    All Day (00:00 - 00:00)
+                    {t('allDay')} (00:00 - 00:00)
                 </label>
             </div>
 
             {!isAllDay && (
                 <div style={{ display: 'grid', gap: '1rem' }}>
                     <MaterialTimePicker
-                        label="Start"
+                        label={t('startTime')}
                         value={start}
                         onChange={setStart}
                     />
                     <MaterialTimePicker
-                        label="End"
+                        label={t('endTime')}
                         value={end}
                         onChange={setEnd}
                     />
@@ -172,11 +178,11 @@ const DayEditor = ({ date, initialAvailability, onSave, onDelete, onClose }) => 
             )}
 
             <div style={{ display: 'flex', gap: '0.5rem', marginTop: '1rem' }}>
-                <button className="btn btn-primary" style={{ flex: 1 }} onClick={handleSave}>Save</button>
+                <button className="btn btn-primary" style={{ flex: 1 }} onClick={handleSave}>{t('save')}</button>
                 {initialAvailability && (
-                    <button className="btn btn-secondary" style={{ flex: 1, color: 'var(--danger)', borderColor: 'var(--danger)' }} onClick={() => onDelete(date)}>Remove</button>
+                    <button className="btn btn-secondary" style={{ flex: 1, color: 'var(--danger)', borderColor: 'var(--danger)' }} onClick={() => onDelete(date)}>{t('remove')}</button>
                 )}
-                <button className="btn btn-secondary" style={{ flex: 1 }} onClick={onClose}>Cancel</button>
+                <button className="btn btn-secondary" style={{ flex: 1 }} onClick={onClose}>{t('cancel')}</button>
             </div>
         </div>
     );

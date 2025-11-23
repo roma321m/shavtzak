@@ -5,10 +5,9 @@ import { format, addDays, startOfWeek, endOfWeek, eachDayOfInterval, isSameDay }
 import * as XLSX from 'xlsx';
 import { Download, Calendar as CalendarIcon, RefreshCw, Trash2 } from 'lucide-react';
 import MaterialDatePicker from '../ui/MaterialDatePicker';
-import { t } from '../../utils/translations';
 
 const ScheduleManager = () => {
-    const { missions, employees, schedule, updateSchedule } = useApp();
+    const { missions, employees, schedule, updateSchedule, t, dateLocale } = useApp();
     const [startDate, setStartDate] = useState(format(startOfWeek(new Date(), { weekStartsOn: 1 }), 'yyyy-MM-dd'));
     const [endDate, setEndDate] = useState(format(endOfWeek(new Date(), { weekStartsOn: 1 }), 'yyyy-MM-dd'));
     const [viewMode, setViewMode] = useState('employee'); // 'employee' or 'mission'
@@ -26,7 +25,7 @@ const ScheduleManager = () => {
         const days = eachDayOfInterval({ start, end });
 
         const data = employees.map(emp => {
-            const row = { Name: emp.name, Roles: emp.roles.join(', ') };
+            const row = { [t('name')]: emp.name, [t('roles')]: emp.roles.join(', ') };
             days.forEach(day => {
                 const dateStr = format(day, 'yyyy-MM-dd');
                 const shift = schedule.find(s => s.employeeId === emp.id && s.date === dateStr);
@@ -37,7 +36,7 @@ const ScheduleManager = () => {
 
         const unassigned = schedule.filter(s => !s.employeeId);
         if (unassigned.length > 0) {
-            const unassignedRow = { Name: t('unassigned'), Roles: '' };
+            const unassignedRow = { [t('name')]: t('unassigned'), [t('roles')]: '' };
             days.forEach(day => {
                 const dateStr = format(day, 'yyyy-MM-dd');
                 const shifts = unassigned.filter(s => s.date === dateStr);
@@ -142,7 +141,7 @@ const ScheduleManager = () => {
                                 <th style={{ textAlign: 'left', padding: '0.75rem', borderBottom: '1px solid var(--bg-tertiary)', color: 'var(--text-secondary)' }}>{t('employee')}</th>
                                 {days.map(day => (
                                     <th key={day.toString()} style={{ textAlign: 'center', padding: '0.75rem', borderBottom: '1px solid var(--bg-tertiary)', color: 'var(--text-secondary)' }}>
-                                        {format(day, 'EEE d')}
+                                        {format(day, 'EEE d', { locale: dateLocale })}
                                     </th>
                                 ))}
                             </tr>
@@ -213,7 +212,7 @@ const ScheduleManager = () => {
                                 <th style={{ textAlign: 'left', padding: '0.75rem', borderBottom: '1px solid var(--bg-tertiary)', color: 'var(--text-secondary)' }}>{t('mission')}</th>
                                 {days.map(day => (
                                     <th key={day.toString()} style={{ textAlign: 'center', padding: '0.75rem', borderBottom: '1px solid var(--bg-tertiary)', color: 'var(--text-secondary)' }}>
-                                        {format(day, 'EEE d')}
+                                        {format(day, 'EEE d', { locale: dateLocale })}
                                     </th>
                                 ))}
                             </tr>

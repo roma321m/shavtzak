@@ -8,7 +8,6 @@ import TagManager from './components/employees/TagManager';
 import AggregatedCalendar from './components/calendar/AggregatedCalendar';
 import ScheduleManager from './components/schedule/ScheduleManager';
 import { Briefcase, Users, Calendar, LayoutGrid, Languages } from 'lucide-react';
-import { t, setCurrentLanguage, isRTL } from './utils/translations';
 import './App.css';
 
 const TabButton = ({ active, onClick, icon: Icon, label }) => (
@@ -31,16 +30,10 @@ const TabButton = ({ active, onClick, icon: Icon, label }) => (
 );
 
 const Dashboard = () => {
-  const { language, setLanguage } = useApp();
+  const { language, setLanguage, t, isRTL } = useApp();
   const [activeTab, setActiveTab] = useState('missions');
   const [missionToDuplicate, setMissionToDuplicate] = useState(null);
   const [missionToEdit, setMissionToEdit] = useState(null);
-
-  // Update translation language and dir attribute when language changes
-  React.useEffect(() => {
-    setCurrentLanguage(language);
-    document.documentElement.setAttribute('dir', language === 'he' ? 'rtl' : 'ltr');
-  }, [language]);
 
   const toggleLanguage = () => {
     setLanguage(language === 'en' ? 'he' : 'en');
@@ -71,8 +64,8 @@ const Dashboard = () => {
         style={{
           position: 'fixed',
           top: '1rem',
-          right: isRTL() ? 'auto' : '1rem',
-          left: isRTL() ? '1rem' : 'auto',
+          right: isRTL ? 'auto' : '1rem',
+          left: isRTL ? '1rem' : 'auto',
           display: 'flex',
           alignItems: 'center',
           gap: '0.5rem',

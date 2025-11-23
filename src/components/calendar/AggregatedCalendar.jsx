@@ -4,7 +4,7 @@ import { format, startOfMonth, endOfMonth, eachDayOfInterval, startOfWeek, endOf
 import { ChevronLeft, ChevronRight, Users, X } from 'lucide-react';
 
 const AggregatedCalendar = () => {
-    const { employees } = useApp();
+    const { employees, t, dateLocale, isRTL } = useApp();
     const [currentMonth, setCurrentMonth] = useState(new Date());
     const [selectedDay, setSelectedDay] = useState(null);
 
@@ -31,16 +31,20 @@ const AggregatedCalendar = () => {
     return (
         <div className="card">
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
-                <h3 className="title" style={{ margin: 0 }}>Availability Overview</h3>
+                <h3 className="title" style={{ margin: 0 }}>{t('availabilityOverview')}</h3>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-                    <button onClick={() => setCurrentMonth(d => new Date(d.getFullYear(), d.getMonth() - 1))} className="btn btn-secondary"><ChevronLeft size={20} /></button>
-                    <span style={{ fontSize: '1.25rem', fontWeight: 600 }}>{format(currentMonth, 'MMMM yyyy')}</span>
-                    <button onClick={() => setCurrentMonth(d => new Date(d.getFullYear(), d.getMonth() + 1))} className="btn btn-secondary"><ChevronRight size={20} /></button>
+                    <button onClick={() => setCurrentMonth(d => new Date(d.getFullYear(), d.getMonth() - 1))} className="btn btn-secondary">
+                        {isRTL ? <ChevronRight size={20} /> : <ChevronLeft size={20} />}
+                    </button>
+                    <span style={{ fontSize: '1.25rem', fontWeight: 600 }}>{format(currentMonth, 'MMMM yyyy', { locale: dateLocale })}</span>
+                    <button onClick={() => setCurrentMonth(d => new Date(d.getFullYear(), d.getMonth() + 1))} className="btn btn-secondary">
+                        {isRTL ? <ChevronLeft size={20} /> : <ChevronRight size={20} />}
+                    </button>
                 </div>
             </div>
 
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(7, 1fr)', gap: '0.5rem', marginBottom: '0.5rem', textAlign: 'center', fontWeight: 600, color: 'var(--text-secondary)' }}>
-                {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map(d => <div key={d}>{d}</div>)}
+                {[t('sun'), t('mon'), t('tue'), t('wed'), t('thu'), t('fri'), t('sat')].map(d => <div key={d}>{d}</div>)}
             </div>
 
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(7, 1fr)', gap: '0.5rem' }}>
@@ -69,7 +73,7 @@ const AggregatedCalendar = () => {
                             {count > 0 ? (
                                 <>
                                     <div style={{ fontSize: '0.75rem', color: 'var(--success)', fontWeight: 600 }}>
-                                        {count} Available
+                                        {count} {t('available')}
                                     </div>
                                     <div style={{ fontSize: '0.65rem', color: 'var(--text-secondary)' }}>
                                         {Object.entries(stats).slice(0, 3).map(([role, num]) => (
@@ -99,10 +103,10 @@ const AggregatedCalendar = () => {
                             <X size={24} />
                         </button>
 
-                        <h3 className="title">Available on {format(selectedDay.date, 'MMM d, yyyy')}</h3>
+                        <h3 className="title">{t('available')} {t('on')} {format(selectedDay.date, 'MMM d, yyyy', { locale: dateLocale })}</h3>
 
                         <div style={{ marginBottom: '1rem' }}>
-                            <div style={{ fontWeight: 600, marginBottom: '0.5rem' }}>Summary</div>
+                            <div style={{ fontWeight: 600, marginBottom: '0.5rem' }}>{t('summary')}</div>
                             <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
                                 {Object.entries(selectedDay.stats).map(([role, num]) => (
                                     <span key={role} style={{ background: 'var(--bg-tertiary)', padding: '0.25rem 0.5rem', borderRadius: '1rem', fontSize: '0.875rem' }}>
@@ -113,9 +117,9 @@ const AggregatedCalendar = () => {
                         </div>
 
                         <div>
-                            <div style={{ fontWeight: 600, marginBottom: '0.5rem' }}>Employees</div>
+                            <div style={{ fontWeight: 600, marginBottom: '0.5rem' }}>{t('employees')}</div>
                             {selectedDay.employees.length === 0 ? (
-                                <div style={{ color: 'var(--text-secondary)' }}>No employees available.</div>
+                                <div style={{ color: 'var(--text-secondary)' }}>{t('noEmployeesAvailable')}</div>
                             ) : (
                                 <div style={{ display: 'grid', gap: '0.5rem' }}>
                                     {selectedDay.employees.map(emp => (

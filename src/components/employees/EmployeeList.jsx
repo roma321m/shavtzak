@@ -2,10 +2,9 @@ import React, { useState } from 'react';
 import { useApp } from '../../context/AppProvider';
 import { Trash2, Calendar, User, Tag } from 'lucide-react';
 import AvailabilityModal from './AvailabilityModal';
-import { t } from '../../utils/translations';
 
 const EmployeeList = () => {
-    const { employees, deleteEmployee, updateEmployee, roles } = useApp();
+    const { employees, deleteEmployee, updateEmployee, roles, t, isRTL } = useApp();
     const [selectedEmployeeId, setSelectedEmployeeId] = useState(null);
     const [editingEmployeeId, setEditingEmployeeId] = useState(null);
     const [selectedRolesForEdit, setSelectedRolesForEdit] = useState([]);
@@ -46,7 +45,7 @@ const EmployeeList = () => {
                             style={{
                                 position: 'absolute',
                                 top: '1rem',
-                                right: '1rem',
+                                [isRTL ? 'left' : 'right']: '1rem',
                                 background: 'none',
                                 border: 'none',
                                 color: 'var(--text-secondary)',

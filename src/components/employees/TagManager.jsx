@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
 import { useApp } from '../../context/AppProvider';
 import { Plus, X, Tag } from 'lucide-react';
-import { t } from '../../utils/translations';
 
 const TagManager = () => {
-    const { roles, addRole, deleteRole } = useApp();
+    const { roles, addRole, deleteRole, t } = useApp();
     const [newRole, setNewRole] = useState('');
 
     const handleAdd = (e) => {

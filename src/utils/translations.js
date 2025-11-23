@@ -1,5 +1,5 @@
 // Translation keys and values
-const translations = {
+export const translations = {
     en: {
         // Navigation
         missions: 'Missions',
@@ -80,7 +80,31 @@ const translations = {
         ok: 'OK',
         time: 'Time',
         viewByEmployee: 'View by Employee',
-        viewByMission: 'View by Mission'
+        viewByMission: 'View by Mission',
+
+        // Excel Export
+        name: 'Name',
+        roles: 'Roles',
+        shifts: 'Shifts',
+
+        // Calendar/Availability Extras
+        availabilityOverview: 'Availability Overview',
+        available: 'Available',
+        allDay: 'All Day',
+        edit: 'Edit',
+        remove: 'Remove',
+        summary: 'Summary',
+        noEmployeesAvailable: 'No employees available.',
+        sun: 'Sun',
+        mon: 'Mon',
+        tue: 'Tue',
+        wed: 'Wed',
+        thu: 'Thu',
+        fri: 'Fri',
+        sat: 'Sat',
+        on: 'on',
+        ok: 'OK',
+        cancel: 'Cancel'
     },
     he: {
         // Navigation
@@ -162,22 +186,30 @@ const translations = {
         ok: 'אישור',
         time: 'זמן',
         viewByEmployee: 'תצוגה לפי עובד',
-        viewByMission: 'תצוגה לפי משימה'
+        viewByMission: 'תצוגה לפי משימה',
+
+        // Excel Export
+        name: 'שם',
+        roles: 'תפקידים',
+        shifts: 'משמרות',
+
+        // Calendar/Availability Extras
+        availabilityOverview: 'סקירת זמינות',
+        available: 'זמינים',
+        allDay: 'כל היום',
+        edit: 'ערוך',
+        remove: 'הסר',
+        summary: 'סיכום',
+        noEmployeesAvailable: 'אין עובדים זמינים.',
+        sun: 'א',
+        mon: 'ב',
+        tue: 'ג',
+        wed: 'ד',
+        thu: 'ה',
+        fri: 'ו',
+        sat: 'ש',
+        on: 'ב-',
+        ok: 'אישור',
+        cancel: 'ביטול'
     }
-};
-
-let currentLanguage = 'en';
-
-export const setCurrentLanguage = (lang) => {
-    currentLanguage = lang;
-};
-
-export const getCurrentLanguage = () => currentLanguage;
-
-export const t = (key) => {
-    return translations[currentLanguage]?.[key] || key;
-};
-
-export const isRTL = () => {
-    return currentLanguage === 'he';
 };

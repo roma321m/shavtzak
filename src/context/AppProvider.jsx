@@ -1,5 +1,7 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { v4 as uuidv4 } from 'uuid';
+import { translations } from '../utils/translations';
+import { he, enUS } from 'date-fns/locale';
 
 const AppContext = createContext();
 
@@ -48,6 +50,14 @@ export const AppProvider = ({ children }) => {
     return saved || 'en';
   });
 
+  // Translation helpers
+  const t = (key) => {
+    return translations[language]?.[key] || key;
+  };
+
+  const isRTL = language === 'he';
+  const dateLocale = language === 'he' ? he : enUS;
+
   // Persist to localStorage whenever state changes
   useEffect(() => {
     localStorage.setItem('missions', JSON.stringify(missions));
@@ -67,6 +77,7 @@ export const AppProvider = ({ children }) => {
 
   useEffect(() => {
     localStorage.setItem('language', language);
+    document.documentElement.setAttribute('dir', language === 'he' ? 'rtl' : 'ltr');
   }, [language]);
 
   // Actions
@@ -128,7 +139,10 @@ export const AppProvider = ({ children }) => {
     addRole,
     deleteRole,
     language,
-    setLanguage
+    setLanguage,
+    t,
+    isRTL,
+    dateLocale
   };
 
   return (

@@ -1,10 +1,9 @@
 import React from 'react';
 import { useApp } from '../../context/AppProvider';
 import { Edit, Copy, Trash2, Check, X, Clock, Users } from 'lucide-react';
-import { t } from '../../utils/translations';
 
 const MissionList = ({ onDuplicate, onEdit }) => {
-    const { missions, deleteMission, updateMission } = useApp();
+    const { missions, deleteMission, updateMission, t } = useApp();
 
     if (missions.length === 0) {
         return (

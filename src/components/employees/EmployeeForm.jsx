@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
 import { useApp } from '../../context/AppProvider';
 import { Plus, X } from 'lucide-react';
-import { t } from '../../utils/translations';
 
 const EmployeeForm = ({ onClose }) => {
-    const { addEmployee, roles } = useApp();
+    const { addEmployee, roles, t } = useApp();
     const [name, setName] = useState('');
     const [selectedRoles, setSelectedRoles] = useState([]);
     const [newRole, setNewRole] = useState('');
