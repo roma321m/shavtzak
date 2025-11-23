@@ -233,7 +233,7 @@ const ScheduleManager = () => {
                                         </td>
                                         {days.map(day => {
                                             const dateStr = format(day, 'yyyy-MM-dd');
-                                            const shifts = schedule.filter(s => s.missionName === mission.name && s.date === dateStr);
+                                            const shifts = schedule.filter(s => s.missionId === mission.id && s.date === dateStr);
                                             return (
                                                 <td key={day.toString()} style={{ padding: '0.5rem', textAlign: 'center' }}>
                                                     {shifts.length > 0 ? (
