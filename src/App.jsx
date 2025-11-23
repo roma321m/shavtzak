@@ -84,7 +84,6 @@ const Dashboard = () => {
       >
         <Languages size={18} />
         {language === 'en' ? 'EN' : 'עב'}
-        {language === 'en' ? 'EN' : 'עב'}
       </button>
 
       {/* Data Actions */}
