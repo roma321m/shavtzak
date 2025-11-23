@@ -7,7 +7,7 @@ import EmployeeList from './components/employees/EmployeeList';
 import TagManager from './components/employees/TagManager';
 import AggregatedCalendar from './components/calendar/AggregatedCalendar';
 import ScheduleManager from './components/schedule/ScheduleManager';
-import { Briefcase, Users, Calendar, LayoutGrid, Languages } from 'lucide-react';
+import { Briefcase, Users, Calendar, LayoutGrid, Languages, Download, Upload } from 'lucide-react';
 import './App.css';
 
 const TabButton = ({ active, onClick, icon: Icon, label }) => (
@@ -30,7 +30,7 @@ const TabButton = ({ active, onClick, icon: Icon, label }) => (
 );
 
 const Dashboard = () => {
-  const { language, setLanguage, t, isRTL } = useApp();
+  const { language, setLanguage, t, isRTL, exportData, importData } = useApp();
   const [activeTab, setActiveTab] = useState('missions');
   const [missionToDuplicate, setMissionToDuplicate] = useState(null);
   const [missionToEdit, setMissionToEdit] = useState(null);
@@ -84,7 +84,60 @@ const Dashboard = () => {
       >
         <Languages size={18} />
         {language === 'en' ? 'EN' : 'עב'}
+        {language === 'en' ? 'EN' : 'עב'}
       </button>
+
+      {/* Data Actions */}
+      <div style={{
+        position: 'fixed',
+        top: '1rem',
+        left: isRTL ? 'auto' : '1rem',
+        right: isRTL ? '1rem' : 'auto',
+        display: 'flex',
+        gap: '0.5rem',
+        zIndex: 1000
+      }}>
+        <button
+          onClick={exportData}
+          className="btn btn-secondary"
+          style={{ padding: '0.5rem 0.75rem', fontSize: '0.875rem' }}
+          title={t('exportData')}
+        >
+          <Download size={16} /> {t('exportData')}
+        </button>
+        <button
+          onClick={() => document.getElementById('import-file').click()}
+          className="btn btn-secondary"
+          style={{ padding: '0.5rem 0.75rem', fontSize: '0.875rem' }}
+          title={t('importData')}
+        >
+          <Upload size={16} /> {t('importData')}
+        </button>
+        <input
+          id="import-file"
+          type="file"
+          accept=".json"
+          style={{ display: 'none' }}
+          onChange={(e) => {
+            const file = e.target.files[0];
+            if (!file) return;
+
+            if (window.confirm(t('importConfirm'))) {
+              const reader = new FileReader();
+              reader.onload = (event) => {
+                const success = importData(event.target.result);
+                if (success) {
+                  alert(t('importSuccess'));
+                } else {
+                  alert(t('importError'));
+                }
+              };
+              reader.readAsText(file);
+            }
+            e.target.value = ''; // Reset
+          }}
+        />
+      </div>
 
       <div style={{ display: 'flex', justifyContent: 'center', gap: '1rem', marginBottom: '2rem', marginTop: '2rem', flexWrap: 'wrap' }}>
         <TabButton active={activeTab === 'missions'} onClick={() => setActiveTab('missions')} icon={Briefcase} label={t('missions')} />

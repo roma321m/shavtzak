@@ -104,7 +104,15 @@ export const translations = {
         sat: 'Sat',
         on: 'on',
         ok: 'OK',
-        cancel: 'Cancel'
+        cancel: 'Cancel',
+
+        // Data Management
+        dataManagement: 'Data Management',
+        exportData: 'Export Data',
+        importData: 'Import Data',
+        importConfirm: 'This will overwrite all current data. Are you sure?',
+        importSuccess: 'Data imported successfully!',
+        importError: 'Error importing data. Invalid file format.'
     },
     he: {
         // Navigation
@@ -210,6 +218,14 @@ export const translations = {
         sat: 'ש',
         on: 'ב-',
         ok: 'אישור',
-        cancel: 'ביטול'
+        cancel: 'ביטול',
+
+        // Data Management
+        dataManagement: 'ניהול נתונים',
+        exportData: 'ייצוא נתונים',
+        importData: 'ייבוא נתונים',
+        importConfirm: 'פעולה זו תדרוס את כל הנתונים הנוכחיים. האם אתה בטוח?',
+        importSuccess: 'הנתונים יובאו בהצלחה!',
+        importError: 'שגיאה בייבוא הנתונים. פורמט קובץ לא תקין.'
     }
 };

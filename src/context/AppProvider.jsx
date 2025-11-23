@@ -142,7 +142,40 @@ export const AppProvider = ({ children }) => {
     setLanguage,
     t,
     isRTL,
-    dateLocale
+    dateLocale,
+    exportData: () => {
+      const data = {
+        missions,
+        employees,
+        schedule,
+        roles
+      };
+      const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `shift_scheduler_data_${new Date().toISOString().split('T')[0]}.json`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    },
+    importData: (jsonData) => {
+      try {
+        const data = JSON.parse(jsonData);
+        if (data.missions && data.employees && data.schedule && data.roles) {
+          setMissions(data.missions);
+          setEmployees(data.employees);
+          setSchedule(data.schedule);
+          setRoles(data.roles);
+          return true;
+        }
+        return false;
+      } catch (e) {
+        console.error('Import error:', e);
+        return false;
+      }
+    }
   };
 
   return (
