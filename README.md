@@ -1,4 +1,4 @@
-# Shift Scheduler
+# Shavtzak
 
 
 [Live](https://roma321m.github.io/shavtzak/)
